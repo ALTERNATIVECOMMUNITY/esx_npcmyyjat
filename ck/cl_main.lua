@@ -12,7 +12,7 @@ CreateThread(function()
 	end
     TriggerServerEvent('velho_npcmyyjat:serverista')
     TriggerServerEvent('velho_npcmyyjat:dbsta')
-    Wait(15000)
+    Wait(5600)
     while true do
     Wait(0)
     local coords = GetEntityCoords(PlayerPedId())
@@ -118,8 +118,8 @@ function luo(npc)
             if Vdist(database[npc].x, database[npc].y, database[npc].z, coords.x, coords.y, coords.z) < 150.0 then --npc luonti
                 if database[npc].kaytossa == 1 then
                     if not npct[npc].luotu then
-                    RequestModel(GetHashKey(perse[i].pedmodel))
-                    while not HasModelLoaded(GetHashKey(perse[i].pedmodel)) do
+                    RequestModel(GetHashKey(npct[npc].npcmodel))
+                    while not HasModelLoaded(GetHashKey(npct[npc].npcmodel)) do
                         Citizen.Wait(1)
                     end
                             RequestAnimDict(npct[npc].anim)
