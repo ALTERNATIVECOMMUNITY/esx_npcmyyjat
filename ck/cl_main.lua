@@ -209,8 +209,8 @@ end)
 
 function teksti(x, y, z, text)
     local onScreen,_x,_y=World3dToScreen2d(x,y,z+0.30)
-    local px,py,pz=table.unpack(GetGameplayCamCoords())
-    local dist = GetDistanceBetweenCoords(px,py,pz, x,y,z, 1)
+    local x2, y2, z2=table.unpack(GetGameplayCamCoords())
+    local dist = GetDistanceBetweenCoords(x2, y2, z2, x, y, z, 1)
     local scale = (1/dist)*1
     local fov = (1/GetGameplayCamFov())*100
     local scale = 1.0
@@ -228,7 +228,7 @@ function teksti(x, y, z, text)
         SetTextCentre(1)
         AddTextComponentString(text)
         DrawText(_x,_y)
-    local factor = (string.len(text)) / 370
+        local factor = (string.len(text)) / 370
     	DrawRect(_x,_y+0.0125, 0.013+ factor, 0.03, 0, 0, 0, 68)
     end
 end
