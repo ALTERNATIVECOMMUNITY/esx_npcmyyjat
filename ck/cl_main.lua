@@ -93,6 +93,7 @@ function menu(npc) --works
             end
         end
         if data.current.value == 3 then
+	    ESX.UI.Menu.CloseAll()
             ryosto(npc)
         end
 	end,
