@@ -59,7 +59,7 @@ function menu(npc) --works
     table.insert(elements, {label = 'Myyn: ' ..database[npc].label.. ' hintaan: $' ..database[npc].hinta, value = 1})
     table.insert(elements, {label = 'Minulla on vielä: ' ..database[npc].jaljella.. 'kpl jäljellä!', value = 2})
     if IsPedArmed(PlayerPedId(), 7) then
-    table.insert(elements, {label = 'Ryöstä myyjä!', value = 3})
+        table.insert(elements, {label = 'Ryöstä myyjä!', value = 3})
     end
     ESX.UI.Menu.Open(
 	    'default', GetCurrentResourceName(), 'npc',
@@ -111,40 +111,35 @@ end)
 
 function luo(npc)
     npct[npc].luotu = false
-    CreateThread(function()
-        while true do
-            Wait(0)
-            local coords = GetEntityCoords(PlayerPedId())
-            if Vdist(database[npc].x, database[npc].y, database[npc].z, coords.x, coords.y, coords.z) < 150.0 then --npc luonti
-                if database[npc].kaytossa == 1 then
-                    if not npct[npc].luotu then
-                    RequestModel(GetHashKey(npct[npc].npcmodel))
-                    while not HasModelLoaded(GetHashKey(npct[npc].npcmodel)) do
+    local coords = GetEntityCoords(PlayerPedId())
+    if Vdist(database[npc].x, database[npc].y, database[npc].z, coords.x, coords.y, coords.z) < 150.0 then --npc luonti
+        if database[npc].kaytossa == 1 then
+            if not npct[npc].luotu then
+                RequestModel(GetHashKey(npct[npc].npcmodel))
+                while not HasModelLoaded(GetHashKey(npct[npc].npcmodel)) do
+                    Citizen.Wait(1)
+                end
+                    RequestAnimDict(npct[npc].anim)
+                    while not HasAnimDictLoaded(npct[npc].anim) do
                         Citizen.Wait(1)
                     end
-                            RequestAnimDict(npct[npc].anim)
-                            while not HasAnimDictLoaded(npct[npc].anim) do
-                                Citizen.Wait(1)
-                            end
-                        Wait(100)	
-                        pedi = CreatePed(4, GetHashKey(npct[npc].npcmodel), database[npc].x, database[npc].y, database[npc].z, database[npc].h, false, true)
-                        SetEntityHeading(pedi, database[npc].h+0.0)
-                        SetPedCanRagdollFromPlayerImpact(pedi, false)
-                        SetPedCanEvasiveDive(pedi, false)
-                        SetPedCanBeTargetted(pedi, false)
-                        SetEntityInvincible(pedi, true)
-                        SetBlockingOfNonTemporaryEvents(pedi, true)
-                        TaskPlayAnim(pedi,npct[npc].anim,npct[npc].anim2,1.0, 1.0, -1, 9, 1.0, 0, 0, 0)
-                        Wait(700)
-                        FreezeEntityPosition(pedi, true)
-                        npct[npc].luotu = true
-                    end
-                end
-            else
-                Wait(5000)
+                Wait(100)	
+                pedi = CreatePed(4, GetHashKey(npct[npc].npcmodel), database[npc].x, database[npc].y, database[npc].z, database[npc].h, false, true)
+                SetEntityHeading(pedi, database[npc].h+0.0)
+                SetPedCanRagdollFromPlayerImpact(pedi, false)
+                SetPedCanEvasiveDive(pedi, false)
+                SetPedCanBeTargetted(pedi, false)
+                SetEntityInvincible(pedi, true)
+                SetBlockingOfNonTemporaryEvents(pedi, true)
+                TaskPlayAnim(pedi, npct[npc].anim, npct[npc].anim2,1.0, 1.0, -1, 9, 1.0, 0, 0, 0)
+                Wait(700)
+                FreezeEntityPosition(pedi, true)
+                npct[npc].luotu = true
             end
         end
-    end)
+    else
+        Wait(5000)
+    end
 end
 
 
@@ -156,7 +151,6 @@ function vaihdapaikkaa(npc)
     SetPedAsNoLongerNeeded(pedi)
     Wait(5000)
     npct[npc].luotu = false
-    npct[npc].pylly = false
 end
 
 function ryosto(npc)
